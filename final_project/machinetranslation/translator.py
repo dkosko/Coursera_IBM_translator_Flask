@@ -23,10 +23,22 @@ def create_connection():
     return language_translator
 
 
+def valid_translator_input(text_to_translate):
+    """Function validates if input to translator func can be processed"""
+    null_cases = (None, '', ' ')
+    if text_to_translate in null_cases:
+        return None
+    else:
+        return 1
+
 def english_to_french(english_text):
     """Function translatest english statement into french
     input: englishText:str
     output: frenchText:str"""
+    val_result = valid_translator_input(english_text)
+    if not val_result == 1:
+        return val_result
+
     language_translator = create_connection()
     translation = language_translator.translate(text=english_text, model_id='en-fr').get_result()
     french_text = translation["translations"][0]["translation"]
@@ -37,6 +49,10 @@ def french_to_english(french_text):
     """Function translatest french statement into english
         input: frenchText:str
         output: englishText:str"""
+    val_result = valid_translator_input(french_text)
+    if  not val_result == 1:
+        return val_result
+
     language_translator = create_connection()
     translation = language_translator.translate(text=french_text, model_id='fr-en').get_result()
     english_text = translation["translations"][0]["translation"]
